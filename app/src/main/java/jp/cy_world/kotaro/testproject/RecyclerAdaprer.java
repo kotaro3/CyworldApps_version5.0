@@ -15,13 +15,16 @@ public class RecyclerAdaprer extends RecyclerView.Adapter<RecyclerAdaprer.ItemVi
 
     ArrayList<String> data;
 
+    //複数のItemdataにアクセスできるようにするための静的クラス
     public static class ItemViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textView;
+        TextView roomName;
+        TextView roomCom;
 
         public ItemViewHolder(View v) {
             super(v);
-            textView = (TextView)v.findViewById(R.id.roomName);
+            roomName = (TextView)v.findViewById(R.id.roomName);
+            roomCom = (TextView)v.findViewById(R.id.roomCom);
         }
     }
 
@@ -29,6 +32,8 @@ public class RecyclerAdaprer extends RecyclerView.Adapter<RecyclerAdaprer.ItemVi
         this.data = list;
     }
 
+
+    //Viewを生成（LayoutManagerに含まれる）
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -36,13 +41,17 @@ public class RecyclerAdaprer extends RecyclerView.Adapter<RecyclerAdaprer.ItemVi
         return new ItemViewHolder(v);
     }
 
+    //Viewの再配置（LayoutManagerに含まれる）
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        String str;
-        str = data.get(position);
-        holder.textView.setText(str);
+        String name;
+        String com = "Comment...";
+        name = data.get(position);
+        holder.roomName.setText(name);
+        holder.roomCom.setText(com);
     }
 
+    //アイテムの数を取得（LayoutManagerに含まれる）
     @Override
     public int getItemCount() {
         return data.size();
