@@ -14,11 +14,11 @@
         android:layout_margin="10dp"
         />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycle_list"
-        android:scrollbars="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></android.support.v7.widget.RecyclerView>
+   <ListView
+       android:id="@+id/roomList"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:layout_gravity="center"
+       />
 
 </LinearLayout>

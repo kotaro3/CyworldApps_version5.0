@@ -7,7 +7,8 @@
 
     <android.support.v7.widget.CardView
         card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card"
+        android:id="@+id/room_card"
+        android:elevation="5dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
@@ -23,8 +24,8 @@
             android:id="@+id/roomName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="aaaa"
+                android:layout_marginTop="10dp"
+            android:text="roomname"
             android:textSize="20sp" />
 
             <TextView
@@ -32,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="こんにちは"
+                android:text="comment"
                 android:textSize="20sp" />
 
         </LinearLayout>
