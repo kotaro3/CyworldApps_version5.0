@@ -12,35 +12,33 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * Created by kotaro on 15/11/26.
  */
 public class LoginActivity extends Activity implements OnClickListener{
 
-    private SpannableStringBuilder sb_address;
-    private SpannableStringBuilder sb_passwd;
+    SpannableStringBuilder sb_address;
+    SpannableStringBuilder sb_passwd;
     private EditText input_address;
+    private EditText input_passwd;
+    TextView createPage;
 
     private String address;
     private String passwd;
+    ArrayList<String> userData;
+    LoginTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
 
-        EditText input_address = (EditText)findViewById(R.id.input_id);
-        EditText input_passwd = (EditText)findViewById(R.id.input_pass);
+        input_address = (EditText)findViewById(R.id.input_id);
+        input_passwd = (EditText)findViewById(R.id.input_pass);
         Button start = (Button)findViewById(R.id.start);
-        TextView createPage = (TextView)findViewById(R.id.createPage);
-
-        sb_address = (SpannableStringBuilder) input_address.getText();
-        sb_passwd = (SpannableStringBuilder) input_passwd.getText();
-        address = sb_address.toString();
-        passwd = sb_passwd.toString();
-
-        Log.d("address",address);
-        Log.d("passwd",passwd);
+        createPage = (TextView)findViewById(R.id.createPage);
 
         start.setOnClickListener(this);
         createPage.setOnClickListener(this);
@@ -48,19 +46,28 @@ public class LoginActivity extends Activity implements OnClickListener{
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.start:
-                LoginTask task = new LoginTask();
-                if((task.execute(address, passwd)).equals("True")){
-                    Intent intent = new Intent();
-                    intent.setClassName("jp.cy_world.kotaro.testproject","jp.cy_world.kotaro.testproject.RoomListActivity");
-                    startActivity(intent);
-                    Toast.makeText(this,"Login Success!",Toast.LENGTH_LONG).show();
-                }else {
-                    Toast.makeText(this,"Login Failed",Toast.LENGTH_LONG).show();
-                }
+                sb_address = (SpannableStringBuilder) input_address.getText();
+                sb_passwd = (SpannableStringBuilder) input_passwd.getText();
+                address = sb_address.toString();
+                passwd = sb_passwd.toString();
 
+                userData = new ArrayList<>();
+                userData.add(address);
+                userData.add(passwd);
+                Log.d("address",address);
+                Log.d("passwd", passwd);
+                Log.v("click","click");
+                task = new LoginTask(this);
+                task.execute(userData);
                 break;
             case R.id.createPage:
 
