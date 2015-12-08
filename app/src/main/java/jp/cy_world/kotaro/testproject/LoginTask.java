@@ -2,8 +2,12 @@ package jp.cy_world.kotaro.testproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -25,6 +29,8 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String> {
 
     String result,str;
     Context context;
+    ArrayList<BasicNameValuePair> param ;
+    ArrayList<String> prefData;
 
     public LoginTask(Context context){
         this.context = context;
@@ -34,7 +40,8 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String> {
     protected String doInBackground(ArrayList<String>... params) {
         try {
 
-            ArrayList<BasicNameValuePair> param = new ArrayList<>();
+            param = new ArrayList<>();
+
             param.add(new BasicNameValuePair("address",params[0].get(0)));
             param.add(new BasicNameValuePair("passwd", params[0].get(1)));
 
@@ -67,17 +74,22 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String> {
 
     @Override
     protected void onPostExecute(String aString) {
-
         str = aString;
-        Log.v("aString","###"+ str + "###");
-        Log.v("aString^-^",new Boolean(str.equals("True")).toString());
+        String[] strs = str.split(",",0);
+        prefData = new ArrayList<>();
 
-        if(str.equals("True")){
-            Log.d("task","task Success");
+        if(strs[0].equals("True")){
+            Log.d("task", "task Success");
+            for (int i = 1;i <= prefData.size();i++){
+                prefData.add(strs[i]);
+            }
             Intent intent = new Intent();
-            intent.setClassName("jp.cy_world.kotaro.testproject","jp.cy_world.kotaro.testproject.RoomListActivity");
+            intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.RoomListActivity");
+            intent.putExtra("userData",prefData);
             context.startActivity(intent);
-        }else{
+
+        }else if (strs[0].equals("False")){
+            Toast.makeText(context,"Login Failed",Toast.LENGTH_LONG).show();
             Log.v("login","失敗");
         }
 

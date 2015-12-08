@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="イケてる説明"
+                android:text="説明文"
                 android:textColor="#a0a0a0"
                 android:textSize="20sp" />
 

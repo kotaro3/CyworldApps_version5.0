@@ -28,20 +28,11 @@ public class RoomListActivity extends Activity implements AdapterView.OnItemClic
         super.onCreate(savedInstanceState);
         setTheme(android.R.style.Theme_Material_Light);
         setContentView(R.layout.roomlist_layout);
-
-        ListView listView = (ListView)findViewById(R.id.roomList);
-
-        //ここはListViewと同じ実装でOK
         data = new ArrayList<>();
-        data.add("徹子の部屋");
-        data.add("マツコの部屋");
-        data.add("アッコの部屋");
-        data.add("アッコの部屋");
-        data.add("アッコの部屋");
-        data.add("アッコの部屋");
-        data.add("アッコの部屋");
-        data.add("アッコの部屋");
-        data.add("アッコの部屋");
+        ListView listView = (ListView)findViewById(R.id.roomList);
+        Intent intent = getIntent();
+        data.add(intent.getStringExtra("userData"));
+
 
         RoomListAdapter adapter = new RoomListAdapter(this,0,data);
         listView.setAdapter(adapter);

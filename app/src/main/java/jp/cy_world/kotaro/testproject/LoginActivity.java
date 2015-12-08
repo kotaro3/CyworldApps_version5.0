@@ -2,7 +2,9 @@ package jp.cy_world.kotaro.testproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +31,7 @@ public class LoginActivity extends Activity implements OnClickListener{
     private String passwd;
     ArrayList<String> userData;
     LoginTask task;
+    SharedPreferences data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,12 @@ public class LoginActivity extends Activity implements OnClickListener{
 
         input_address = (EditText)findViewById(R.id.input_id);
         input_passwd = (EditText)findViewById(R.id.input_pass);
+        data = PreferenceManager.getDefaultSharedPreferences(this);
+        if(data.getString("address",null) != null||data.getString("passwd",null) != null){
+            input_address.setText(data.getString("address",null));
+            input_passwd.setText(data.getString("passwd",null));
+        }
+
         Button start = (Button)findViewById(R.id.start);
         createPage = (TextView)findViewById(R.id.createPage);
 
@@ -49,6 +58,9 @@ public class LoginActivity extends Activity implements OnClickListener{
     protected void onPause() {
         super.onPause();
 
+
+        data.edit().putString("address", address.toString()).commit();
+        data.edit().putString("passwd",passwd.toString()).commit();
     }
 
     @Override
@@ -63,9 +75,7 @@ public class LoginActivity extends Activity implements OnClickListener{
                 userData = new ArrayList<>();
                 userData.add(address);
                 userData.add(passwd);
-                Log.d("address",address);
-                Log.d("passwd", passwd);
-                Log.v("click","click");
+
                 task = new LoginTask(this);
                 task.execute(userData);
                 break;
