@@ -1,25 +1,19 @@
 package jp.cy_world.kotaro.testproject;
 
+import android.app.Application;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by kotaro on 15/12/08.
  */
-public class UserBean {
+public class User implements Serializable{
     private String userId;
     private String userName;
     private String address;
     private String passwd;
     private String imgPath;
-
-    public UserBean(String userId, String userName, String address, String passwd, String imgPath) {
-        this.userId = userId;
-        this.userName = userName;
-        this.address = address;
-        this.passwd = passwd;
-        this.imgPath = imgPath;
-    }
-
 
     //getter
     public String getUserId() {return userId;}

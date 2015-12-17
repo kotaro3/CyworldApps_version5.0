@@ -8,6 +8,11 @@ public class RoomBean {
     String roomName;
     String roomCom;
 
+    public RoomBean(String roomName, String roomCom) {
+        this.roomName = roomName;
+        this.roomCom = roomCom;
+    }
+
     public String getRoomName() {
         return roomName;
     }
@@ -16,11 +21,4 @@ public class RoomBean {
         return roomCom;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-
-    public void setRoomCom(String roomCom) {
-        this.roomCom = roomCom;
-    }
 }

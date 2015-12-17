@@ -2,10 +2,7 @@ package jp.cy_world.kotaro.testproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,9 +12,13 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
@@ -25,12 +26,13 @@ import java.util.ArrayList;
 /**
  * Created by kotaro on 15/11/25.
  */
-public class LoginTask extends AsyncTask<ArrayList<String>,Void,String> {
+public class LoginTask extends AsyncTask<ArrayList<String>,Void,String>{
 
-    String result,str;
+    String result;
     Context context;
     ArrayList<BasicNameValuePair> param ;
-    ArrayList<String> prefData;
+    User user;
+    Intent intent = new Intent();
 
     public LoginTask(Context context){
         this.context = context;
@@ -46,7 +48,7 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String> {
             param.add(new BasicNameValuePair("passwd", params[0].get(1)));
 
             DefaultHttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost("http://cyworld.pgw.jp:8080/test/AndroidLoginServlet");
+            HttpPost post = new HttpPost("http://cyworld.pgw.jp:1919/test/AndroidLoginServlet");
             Log.v("URL", "URLセット");
             Log.v("address",post.getURI().toString());
             post.setEntity(new UrlEncodedFormEntity(param, "UTF-8"));
@@ -55,11 +57,13 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String> {
             int status = response.getStatusLine().getStatusCode();
 
             if (HttpStatus.SC_OK == status) {
+                Log.v("",Integer.toString(status));
                    ByteArrayOutputStream os  = new ByteArrayOutputStream();
                     response.getEntity().writeTo(os);
                     result = os.toString();
                     Log.v("result",os.toString());
             }else{
+                Log.v("status",Integer.toString(status));
                 Log.v("HTTPstatus","接続失敗");
             }
 
@@ -74,23 +78,30 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String> {
 
     @Override
     protected void onPostExecute(String aString) {
-        str = aString;
-        String[] strs = str.split(",",0);
-        prefData = new ArrayList<>();
 
-        if(strs[0].equals("True")){
+        user = new User();
+        try {
+            JSONObject obj = new JSONObject(aString);
+            user.setUserId(obj.getString("userID"));
+            user.setAddress(obj.getString("address"));
+            user.setImgPath(obj.getString("ImgPath"));
+            user.setUserName(obj.getString("name"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.v("str", aString);
+        if(user.getUserId() != null){
             Log.d("task", "task Success");
-            for (int i = 1;i <= prefData.size();i++){
-                prefData.add(strs[i]);
-            }
-            Intent intent = new Intent();
+            intent.putExtra("userData", user);
             intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.RoomListActivity");
-            intent.putExtra("userData",prefData);
             context.startActivity(intent);
 
-        }else if (strs[0].equals("False")){
+        }else if (aString.equals("False")){
             Toast.makeText(context,"Login Failed",Toast.LENGTH_LONG).show();
             Log.v("login","失敗");
+        }else{
+            Toast.makeText(context,"プログラムエラー",Toast.LENGTH_LONG).show();
         }
 
     }

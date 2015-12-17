@@ -19,7 +19,10 @@ public class RoomListActivity extends Activity implements AdapterView.OnItemClic
 
 
     //取得データを入れる配列
-    ArrayList<String> data;
+    ArrayList<String> userData;
+    User user;
+    RoomListTask task;
+    String[] data;
     final int a = 0;
     final int b = 1;
 
@@ -28,14 +31,15 @@ public class RoomListActivity extends Activity implements AdapterView.OnItemClic
         super.onCreate(savedInstanceState);
         setTheme(android.R.style.Theme_Material_Light);
         setContentView(R.layout.roomlist_layout);
-        data = new ArrayList<>();
+
+        user = (User)getIntent().getSerializableExtra("userData");
+        userData = new ArrayList<>();
+        Log.v("userId",user.getUserId());
+        userData.add(user.getUserId());
         ListView listView = (ListView)findViewById(R.id.roomList);
-        Intent intent = getIntent();
-        data.add(intent.getStringExtra("userData"));
 
-
-        RoomListAdapter adapter = new RoomListAdapter(this,0,data);
-        listView.setAdapter(adapter);
+        task = new RoomListTask(this,listView);
+        task.execute(userData);
 
         listView.setOnItemClickListener(this);
 
