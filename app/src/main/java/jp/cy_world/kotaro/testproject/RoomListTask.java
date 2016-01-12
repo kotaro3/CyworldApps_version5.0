@@ -41,34 +41,10 @@ public class RoomListTask extends AsyncTask<ArrayList<String>,Void,String> {
     @Override
     protected String doInBackground(ArrayList<String>... params) {
         ArrayList<BasicNameValuePair> param = new ArrayList<>();
-        try {
-            param.add(new BasicNameValuePair("userId",params[0].get(0)));
+        param.add(new BasicNameValuePair("userId",params[0].get(0)));
 
-
-            DefaultHttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost("http://cyworld.pgw.jp:1919/test/RoomViewServlet");
-            Log.v("URL", "URLセット");
-            Log.v("address",post.getURI().toString());
-            post.setEntity(new UrlEncodedFormEntity(param, "UTF-8"));
-
-            final HttpResponse response = client.execute(post);
-            int status = response.getStatusLine().getStatusCode();
-
-            if (HttpStatus.SC_OK == status) {
-                ByteArrayOutputStream os  = new ByteArrayOutputStream();
-                response.getEntity().writeTo(os);
-                result = os.toString();
-                Log.v("result",os.toString());
-            }else{
-                Log.v("status",Integer.toString(status));
-                Log.v("HTTPstatus","接続失敗");
-            }
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        HttpAccess access = new HttpAccess();
+        result = access.DBAccess("http://cyworld.pgw.jp:1919/test/RoomViewServlet",param);
         
         return result;
     }
@@ -81,7 +57,7 @@ public class RoomListTask extends AsyncTask<ArrayList<String>,Void,String> {
 
             for (int i = 0;i <= json.length();i++){
                 JSONObject list = json.getJSONObject(i);
-                roomData.add(new RoomBean(list.getString("roomName"),list.getString("comment")));
+                roomData.add(new RoomBean(list.getString("roomName"),list.getString("comment"),list.getString("roomID")));
             }
 
         } catch (JSONException e) {

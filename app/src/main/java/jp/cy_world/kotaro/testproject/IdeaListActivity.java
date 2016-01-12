@@ -22,27 +22,22 @@ import java.util.ArrayList;
  */
 public class IdeaListActivity extends Activity implements View.OnClickListener {
 
+    RoomBean room;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(android.R.style.Theme_Material_Light);
         setContentView(R.layout.idea_list_layout);
 
-        RecyclerView ideaList = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView ideaList = (RecyclerView)findViewById(R.id.recyclerView);
         ideaList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         ideaList.setHasFixedSize(true);
         ArrayList<String> data = new ArrayList<>();
-        data.add("あれ");
-        Log.d("add", data.get(0));
-        data.add("それ");
-        Log.d("add", data.get(1));
-        data.add("これ");
-        Log.d("add", data.get(2));
-        data.add("どれ");
-        Log.d("add", data.get(3));
+        room = (RoomBean)getIntent().getSerializableExtra("roomData");
+        IdeaGetTask task = new IdeaGetTask(this,ideaList);
+        task.execute(room.getRoomId());
 
-        IdeaLIstAdapter adapter = new IdeaLIstAdapter(this,data);
-        ideaList.setAdapter(adapter);
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add_button);
 
 

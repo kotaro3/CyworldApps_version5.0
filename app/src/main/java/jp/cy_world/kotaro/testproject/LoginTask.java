@@ -40,38 +40,14 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String>{
 
     @Override
     protected String doInBackground(ArrayList<String>... params) {
-        try {
 
             param = new ArrayList<>();
 
             param.add(new BasicNameValuePair("address",params[0].get(0)));
             param.add(new BasicNameValuePair("passwd", params[0].get(1)));
 
-            DefaultHttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost("http://cyworld.pgw.jp:1919/test/AndroidLoginServlet");
-            Log.v("URL", "URLセット");
-            Log.v("address",post.getURI().toString());
-            post.setEntity(new UrlEncodedFormEntity(param, "UTF-8"));
-
-            final HttpResponse response = client.execute(post);
-            int status = response.getStatusLine().getStatusCode();
-
-            if (HttpStatus.SC_OK == status) {
-                Log.v("",Integer.toString(status));
-                   ByteArrayOutputStream os  = new ByteArrayOutputStream();
-                    response.getEntity().writeTo(os);
-                    result = os.toString();
-                    Log.v("result",os.toString());
-            }else{
-                Log.v("status",Integer.toString(status));
-                Log.v("HTTPstatus","接続失敗");
-            }
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            HttpAccess access = new HttpAccess();
+            result = access.DBAccess("http://cyworld.pgw.jp:1919/test/AndroidLoginServlet",param);
 
         return result;
     }
