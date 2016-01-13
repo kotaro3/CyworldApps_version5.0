@@ -1,5 +1,6 @@
 package jp.cy_world.kotaro.testproject;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;

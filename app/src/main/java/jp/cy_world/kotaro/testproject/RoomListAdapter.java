@@ -8,25 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.List;
-
-import jp.cy_world.kotaro.testproject.R;
 
 /**
  * Created by kotaro on 15/11/20.
  */
-public class RoomListAdapter extends ArrayAdapter<RoomBean>{
+public class RoomListAdapter extends ArrayAdapter<Room>{
 
     LayoutInflater layoutInflater;
     Context context;
-    ArrayList<RoomBean> list;
+    ArrayList<Room> list;
 
-    public RoomListAdapter(Context context, int resource, ArrayList<RoomBean> list) {
+    public RoomListAdapter(Context context, int resource, ArrayList<Room> list) {
         super(context,resource,list);
         this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
@@ -36,7 +29,7 @@ public class RoomListAdapter extends ArrayAdapter<RoomBean>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
-        RoomBean room = (RoomBean)getItem(position);
+        Room room = (Room)getItem(position);
         if(convertView == null){
             v = layoutInflater.inflate(R.layout.list_layout,parent,false);
         }

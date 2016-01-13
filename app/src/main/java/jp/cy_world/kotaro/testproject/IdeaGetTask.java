@@ -5,21 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 /**
@@ -31,6 +22,7 @@ public class IdeaGetTask extends AsyncTask<String, Integer,String> implements Di
     RecyclerView recyclerView;
     Context context;
     String result;
+    String roomid;
 
     public IdeaGetTask(Context context,RecyclerView recyclerView){
         this.context = context;
@@ -55,7 +47,7 @@ public class IdeaGetTask extends AsyncTask<String, Integer,String> implements Di
 
         publishProgress(10);
 
-        String roomid = params[0].toString();
+        roomid = params[0].toString();
 
         publishProgress(30);
 
@@ -78,17 +70,19 @@ public class IdeaGetTask extends AsyncTask<String, Integer,String> implements Di
 
     @Override
     protected void onPostExecute(String roomBeans) {
-        ArrayList<TicketBean> ticketData = new ArrayList<>();
+        ArrayList<Ticket> ticketData = new ArrayList<>();
         try {
-            JSONArray array = new JSONArray(roomBeans);
-            for (int i = 0;i <= array.length();i++){
-                JSONObject obj = array.getJSONObject(i);
-                ticketData.add(new TicketBean(obj.getString("ticketID"),obj.getString("ticketData")));
-            }
+//            JSONArray array = new JSONArray(roomBeans);
+//
+//            for (int i = 0;i <= array.length();i++){
+//                JSONObject obj = array.getJSONObject(i);
+//                ticketData.add(new Ticket(obj.getString("ticketID"),obj.getString("ticketData"),roomid));
+//            }
+            JSONObject obj = new JSONObject(roomBeans);
+            ticketData.add(new Ticket(obj.getString("TicketId"),obj.getString("TicketData"),roomid));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         IdeaListAdapter adapter = new IdeaListAdapter(context,ticketData);
         recyclerView.setAdapter(adapter);
         dialog.dismiss();

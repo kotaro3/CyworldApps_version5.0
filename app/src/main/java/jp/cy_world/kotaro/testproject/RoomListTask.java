@@ -1,26 +1,14 @@
 package jp.cy_world.kotaro.testproject;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.ListView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.sql.Array;
 import java.util.ArrayList;
 
 /**
@@ -30,7 +18,7 @@ public class RoomListTask extends AsyncTask<ArrayList<String>,Void,String> {
 
     Context context;
     ListView listView;
-    ArrayList<RoomBean> roomData;
+    ArrayList<Room> roomData;
 
     String result;
 
@@ -57,7 +45,7 @@ public class RoomListTask extends AsyncTask<ArrayList<String>,Void,String> {
 
             for (int i = 0;i <= json.length();i++){
                 JSONObject list = json.getJSONObject(i);
-                roomData.add(new RoomBean(list.getString("roomName"),list.getString("comment"),list.getString("roomID")));
+                roomData.add(new Room(list.getString("roomName"),list.getString("comment"),list.getString("roomID")));
             }
 
         } catch (JSONException e) {

@@ -14,10 +14,10 @@ import java.util.ArrayList;
  */
 public class IdeaListAdapter extends RecyclerView.Adapter<IdeaListAdapter.ViewHolder> {
 
-    private ArrayList<TicketBean> data;
+    private ArrayList<Ticket> data;
     private LayoutInflater inflater;
 
-    public IdeaListAdapter(Context context, ArrayList<TicketBean> data) {
+    public IdeaListAdapter(Context context, ArrayList<Ticket> data) {
         this.inflater = LayoutInflater.from(context);
         this.data = data;
     }
@@ -31,7 +31,7 @@ public class IdeaListAdapter extends RecyclerView.Adapter<IdeaListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TicketBean ticketData = (TicketBean)data.get(position);
+        Ticket ticketData = (Ticket)data.get(position);
        // holder.title.setText(title.getTicketId());
         holder.detail.setText(ticketData.getTicketData());
 

@@ -3,6 +3,7 @@ package jp.cy_world.kotaro.testproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.SpannableStringBuilder;
@@ -80,7 +81,9 @@ public class LoginActivity extends Activity implements OnClickListener{
                 task.execute(userData);
                 break;
             case R.id.createPage:
-
+                Uri uri = Uri.parse("http://cyworld.pgw.jp:1919/test/RegisterServlet");
+                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
                 break;
         }
     }

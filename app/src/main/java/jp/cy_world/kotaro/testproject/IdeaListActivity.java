@@ -1,19 +1,15 @@
 package jp.cy_world.kotaro.testproject;
 
+import android.app.ActionBar;
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,19 +18,20 @@ import java.util.ArrayList;
  */
 public class IdeaListActivity extends Activity implements View.OnClickListener {
 
-    RoomBean room;
+    Room room;
+    RecyclerView ideaList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(android.R.style.Theme_Material_Light);
         setContentView(R.layout.idea_list_layout);
 
-        RecyclerView ideaList = (RecyclerView)findViewById(R.id.recyclerView);
+        ideaList = (RecyclerView)findViewById(R.id.recyclerView);
         ideaList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         ideaList.setHasFixedSize(true);
-        ArrayList<String> data = new ArrayList<>();
-        room = (RoomBean)getIntent().getSerializableExtra("roomData");
+        TextView roomName = (TextView)findViewById(R.id.roomName);
+        room = (Room)getIntent().getSerializableExtra("roomData");
+        roomName.setText(room.getRoomName());
         IdeaGetTask task = new IdeaGetTask(this,ideaList);
         task.execute(room.getRoomId());
 
@@ -47,8 +44,21 @@ public class IdeaListActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
-        intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.EditIdeaActivity");
-        startActivity(intent);
+        switch (v.getId()){
+            case R.id.add_button:
+                Dialog edit = new EditIdeaDialog(this,room);
+                edit.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                edit.show();
+                break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IdeaGetTask task = new IdeaGetTask(this,ideaList);
+        room = (Room)getIntent().getSerializableExtra("roomData");
+
+        task.execute(room.getRoomId());
     }
 }
