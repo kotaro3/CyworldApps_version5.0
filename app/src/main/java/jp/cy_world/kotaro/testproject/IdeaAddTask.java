@@ -29,7 +29,7 @@ public class IdeaAddTask extends AsyncTask<ArrayList<String>,Integer,String> {
         param.add(new BasicNameValuePair("roomId",params[0].get(1).toString()));
         HttpAccess access = new HttpAccess();
 
-        result = access.DBAccess("http://cyworld.pgw.jp:1919/test/TicketGetServlet",param);
+        result = access.DBAccess("http://cyworld.pgw.jp:1919/test/AddTicketServlet",param);
 
         return result;
     }

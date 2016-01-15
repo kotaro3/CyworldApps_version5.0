@@ -8,16 +8,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by kotaro on 15/12/23.
  */
 public class IdeaListAdapter extends RecyclerView.Adapter<IdeaListAdapter.ViewHolder> {
 
-    private ArrayList<Ticket> data;
+    private Map<String,String> data;
     private LayoutInflater inflater;
 
-    public IdeaListAdapter(Context context, ArrayList<Ticket> data) {
+    public IdeaListAdapter(Context context, Map<String,String> data) {
         this.inflater = LayoutInflater.from(context);
         this.data = data;
     }
@@ -31,10 +33,9 @@ public class IdeaListAdapter extends RecyclerView.Adapter<IdeaListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Ticket ticketData = (Ticket)data.get(position);
-       // holder.title.setText(title.getTicketId());
-        holder.detail.setText(ticketData.getTicketData());
-
+            Set<String> set = data.keySet();
+            String[] a = set.toArray(new String[0]);
+            holder.title.setText(data.get(a[position]));
     }
 
     @Override

@@ -52,13 +52,4 @@ public class IdeaListActivity extends Activity implements View.OnClickListener {
                 break;
         }
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        IdeaGetTask task = new IdeaGetTask(this,ideaList);
-        room = (Room)getIntent().getSerializableExtra("roomData");
-
-        task.execute(room.getRoomId());
-    }
 }

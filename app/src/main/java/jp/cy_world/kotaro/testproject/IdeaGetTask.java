@@ -6,12 +6,18 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by kotaro on 16/01/08.
@@ -69,21 +75,27 @@ public class IdeaGetTask extends AsyncTask<String, Integer,String> implements Di
     }
 
     @Override
-    protected void onPostExecute(String roomBeans) {
+    protected void onPostExecute(String tickets) {
         ArrayList<Ticket> ticketData = new ArrayList<>();
+        Map<String,String> map = new LinkedHashMap<>();
+
         try {
-//            JSONArray array = new JSONArray(roomBeans);
-//
+            ObjectMapper mapper = new ObjectMapper();
+
+            map = mapper.readValue(tickets, new TypeReference<LinkedHashMap<String,String>>(){});
+
+        } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 //            for (int i = 0;i <= array.length();i++){
 //                JSONObject obj = array.getJSONObject(i);
-//                ticketData.add(new Ticket(obj.getString("ticketID"),obj.getString("ticketData"),roomid));
+//                ticketData.add(new Ticket(obj.getString("11"),null,roomid));
 //            }
-            JSONObject obj = new JSONObject(roomBeans);
-            ticketData.add(new Ticket(obj.getString("TicketId"),obj.getString("TicketData"),roomid));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        IdeaListAdapter adapter = new IdeaListAdapter(context,ticketData);
+
+//        ticketData.add(new Ticket(null,obj.keys().getClass().getName(),roomid));
+
+        IdeaListAdapter adapter = new IdeaListAdapter(context,map);
         recyclerView.setAdapter(adapter);
         dialog.dismiss();
     }
