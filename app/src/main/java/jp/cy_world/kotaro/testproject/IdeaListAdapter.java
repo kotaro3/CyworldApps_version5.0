@@ -50,7 +50,6 @@ public class IdeaListAdapter extends RecyclerView.Adapter<IdeaListAdapter.ViewHo
         public ViewHolder(View v) {
             super(v);
             title = (TextView)v.findViewById(R.id.idea_title);
-            detail = (TextView)v.findViewById(R.id.ideaDetale);
         }
     }
 }

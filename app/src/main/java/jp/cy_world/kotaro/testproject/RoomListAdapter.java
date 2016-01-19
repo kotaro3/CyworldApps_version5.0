@@ -35,11 +35,9 @@ public class RoomListAdapter extends ArrayAdapter<Room>{
         }
 
         TextView roomName = (TextView)v.findViewById(R.id.roomName);
-        TextView roomCom  = (TextView)v.findViewById(R.id.roomCom);
 
         roomName.setText(room.getRoomName());
         Log.d("pos",room.getRoomName());
-        roomCom.setText(room.getRoomCom());
 
         return v;
     }

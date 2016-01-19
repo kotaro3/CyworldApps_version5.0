@@ -81,7 +81,7 @@ public class LoginActivity extends Activity implements OnClickListener{
                 task.execute(userData);
                 break;
             case R.id.createPage:
-                Uri uri = Uri.parse("http://cyworld.pgw.jp:1919/test/RegisterServlet");
+                Uri uri = Uri.parse("http://cyworld.pgw.jp:1919/cyworld/RegisterServlet");
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
                 startActivity(intent);
                 break;
