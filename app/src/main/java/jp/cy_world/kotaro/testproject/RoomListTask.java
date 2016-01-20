@@ -32,7 +32,7 @@ public class RoomListTask extends AsyncTask<ArrayList<String>,Void,String> {
         param.add(new BasicNameValuePair("userId",params[0].get(0)));
 
         HttpAccess access = new HttpAccess();
-        result = access.DBAccess("http://cyworld.pgw.jp:1919/test/RoomViewServlet",param);
+        result = access.DBAccess("http://cyworld.pgw.jp:1919/cyworld/RoomViewServlet",param);
         
         return result;
     }

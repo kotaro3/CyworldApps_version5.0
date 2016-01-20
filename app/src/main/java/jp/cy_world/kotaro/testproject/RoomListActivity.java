@@ -30,7 +30,6 @@ public class RoomListActivity extends AppCompatActivity implements AdapterView.O
     User user;
     RoomListTask task;
     final int a = 0;
-
     Menu mainMenu;
 
     @Override
@@ -85,15 +84,17 @@ public class RoomListActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         final int action = event.getAction();
-        final int keyCode = event.getKeyCode();
         if (action == KeyEvent.ACTION_UP) {
-            // メニュー表示
-            if (keyCode == KeyEvent.KEYCODE_MENU) {
-                if (mainMenu != null) {
-                    mainMenu.performIdentifierAction(R.id.action_settings, 0);
-                }
-                return true;
+            switch (event.getKeyCode()){
+                case KeyEvent.KEYCODE_BACK:
+                    return true;
+                case KeyEvent.KEYCODE_MENU:
+                    if (mainMenu != null) {
+                        mainMenu.performIdentifierAction(R.id.action_settings, 0);
+                    }
+                    break;
             }
+            return true;
         }
         return super.dispatchKeyEvent(event);
     }

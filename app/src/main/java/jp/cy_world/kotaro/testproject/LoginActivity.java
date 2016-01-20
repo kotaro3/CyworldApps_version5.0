@@ -34,6 +34,7 @@ public class LoginActivity extends Activity implements OnClickListener{
     LoginTask task;
     SharedPreferences data;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,27 +42,25 @@ public class LoginActivity extends Activity implements OnClickListener{
 
         input_address = (EditText)findViewById(R.id.input_id);
         input_passwd = (EditText)findViewById(R.id.input_pass);
-        data = PreferenceManager.getDefaultSharedPreferences(this);
-        if(data.getString("address",null) != null||data.getString("passwd",null) != null){
-            input_address.setText(data.getString("address",null));
-            input_passwd.setText(data.getString("passwd",null));
-        }
 
         Button start = (Button)findViewById(R.id.start);
         createPage = (TextView)findViewById(R.id.createPage);
+
+        data = PreferenceManager.getDefaultSharedPreferences(this);
 
         start.setOnClickListener(this);
         createPage.setOnClickListener(this);
 
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
-
-
-        data.edit().putString("address", address.toString()).commit();
-        data.edit().putString("passwd",passwd.toString()).commit();
+        if(address!= null && passwd != null){
+            data.edit().putString("address", address.toString()).commit();
+            data.edit().putString("passwd",passwd.toString()).commit();
+        }
     }
 
     @Override
@@ -87,4 +86,15 @@ public class LoginActivity extends Activity implements OnClickListener{
                 break;
         }
     }
+
+    private void Login(ArrayList<String> userData){
+
+        if(data.getString("address",null) != null && data.getString("passwd",null) != null){
+            task = new LoginTask(this);
+            task.execute(userData);
+        }else {
+            return;
+        }
+    }
+
 }

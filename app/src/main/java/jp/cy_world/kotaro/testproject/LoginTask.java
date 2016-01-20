@@ -48,7 +48,7 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String>{
             param.add(new BasicNameValuePair("passwd", params[0].get(1)));
 
             HttpAccess access = new HttpAccess();
-            result = access.DBAccess("http://cyworld.pgw.jp:1919/test/AndroidLoginServlet",param);
+            result = access.DBAccess("http://cyworld.pgw.jp:1919/cyworld/AndroidLoginServlet",param);
 
         return result;
     }
@@ -56,30 +56,39 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String>{
     @Override
     protected void onPostExecute(String aString) {
 
-        user = new User();
-        try {
-            JSONObject obj = new JSONObject(aString);
-            user.setUserId(obj.getString("userID"));
-            user.setAddress(obj.getString("address"));
-            user.setImgPath(obj.getString("ImgPath"));
-            user.setUserName(obj.getString("name"));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.v("str", aString);
-        if(user.getUserId() != null){
-            Log.d("task", "task Success");
-            intent.putExtra("userData", user);
-            intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.RoomListActivity");
+        if(aString == null){
+            intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.LoginActivity");
             context.startActivity(intent);
+        }else {
+            user = new User();
+            try {
+                JSONObject obj = new JSONObject(aString);
+                user.setUserId(obj.getString("userID"));
+                user.setAddress(obj.getString("address"));
+                user.setImgPath(obj.getString("ImgPath"));
+                user.setUserName(obj.getString("name"));
 
-        }else if (aString.equals("False")){
-            Toast.makeText(context,"Login Failed",Toast.LENGTH_LONG).show();
-            Log.v("login","失敗");
-        }else{
-            Toast.makeText(context,"プログラムエラー",Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.v("str", aString);
+
+            if(user.getUserId() != null){
+                Log.d("task", "task Success");
+                intent.putExtra("userData", user);
+                intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.RoomListActivity");
+                context.startActivity(intent);
+
+            }else if (aString.equals("False")){
+                Toast.makeText(context,"Login Failed",Toast.LENGTH_LONG).show();
+                Log.v("login","失敗");
+            }else{
+                Toast.makeText(context,"プログラムエラー",Toast.LENGTH_LONG).show();
+            }
+
         }
+
+
 
     }
 

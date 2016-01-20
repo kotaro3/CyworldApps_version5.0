@@ -67,7 +67,7 @@ public class IdeaGetTask extends AsyncTask<String, Integer,String> implements Di
 
         HttpAccess access = new HttpAccess();
 
-        result = access.DBAccess("http://cyworld.pgw.jp:1919/test/TicketGetServlet",param);
+        result = access.DBAccess("http://cyworld.pgw.jp:1919/cyworld/TicketGetServlet",param);
 
         publishProgress(100);
 
