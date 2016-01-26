@@ -2,8 +2,11 @@ package jp.cy_world.kotaro.testproject;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
 /**
  * Created by kotaro on 15/11/20.
  */
-public class RoomListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,MenuItem.OnMenuItemClickListener{
+public class RoomListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,View.OnClickListener{
 
 
     //取得データを入れる配列
@@ -32,6 +35,8 @@ public class RoomListActivity extends AppCompatActivity implements AdapterView.O
     final int a = 0;
     Menu mainMenu;
 
+    Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +45,37 @@ public class RoomListActivity extends AppCompatActivity implements AdapterView.O
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("RoomList");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
 
         toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == a) {
+                    Intent intent = new Intent();
+                    intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.LoginActivity");
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(RoomListActivity.this);
+                    pref.edit().putString("address", "").commit();
+                    pref.edit().putString("passwd", "").commit();
+                    startActivity(intent);
+
+                }
+                return false;
+            }
+        });
+
+
+        toolbar.setNavigationOnClickListener(this);
+
+       SharedPreferences data = PreferenceManager.getDefaultSharedPreferences(this);
 
         user = (User) getIntent().getSerializableExtra("userData");
+
         userData = new ArrayList<>();
-        Log.v("userId", user.getUserId());
-        userData.add(user.getUserId());
+        String id = data.getString("userId",null);
+        Log.v("userId", id);
+        userData.add(id);
         ListView listView = (ListView) findViewById(R.id.roomList);
 
         task = new RoomListTask(this, listView);
@@ -76,9 +102,19 @@ public class RoomListActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.add(0, a, 0, "Settings").setIcon(android.R.drawable.ic_dialog_info);
+        menu.add(Menu.NONE, a, Menu.NONE, "Logout");
         mainMenu = menu;
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean ret = true;
+        switch (item.getItemId()){
+
+        }
+        return ret;
     }
 
     @Override
@@ -88,24 +124,15 @@ public class RoomListActivity extends AppCompatActivity implements AdapterView.O
             switch (event.getKeyCode()){
                 case KeyEvent.KEYCODE_BACK:
                     return true;
-                case KeyEvent.KEYCODE_MENU:
-                    if (mainMenu != null) {
-                        mainMenu.performIdentifierAction(R.id.action_settings, 0);
-                    }
-                    break;
             }
             return true;
         }
         return super.dispatchKeyEvent(event);
     }
 
+
     @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Toast.makeText(this, "settings clicked 2", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return false;
+    public void onClick(View v) {
+        Toast.makeText(this,"icon click",Toast.LENGTH_LONG).show();
     }
 }

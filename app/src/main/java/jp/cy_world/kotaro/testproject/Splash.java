@@ -24,15 +24,12 @@ public class Splash extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.splash_layout)
-        ;
+        setContentView(R.layout.splash_layout);
         data = PreferenceManager.getDefaultSharedPreferences(this);
         Handler hdl = new Handler();
-        hdl.postDelayed(new splashHandler(this), 1000);
+        hdl.postDelayed(new splashHandler(this), 2000);
 
     }
-
-
 
     private class splashHandler implements Runnable {
 
@@ -42,23 +39,30 @@ public class Splash extends Activity {
         this.context = context;
         }
 
-        String address = data.getString("address",null);
-        String passwd = data.getString("passwd",null);
+
+
         @Override
         public void run() {
-            if(address != null|| passwd != null){
+
+            String address = data.getString("address",null);
+            String passwd = data.getString("passwd",null);
+
+            if (address == null && passwd == null) {
+                intent = new Intent();
+                intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.LoginActivity");
+                startActivity(intent);
+        }else if (!address.equals("") && !passwd.equals("")){
                 ArrayList<String> userData = new ArrayList<>();
                 userData.add(address);
                 userData.add(passwd);
-
-              LoginTask  task = new LoginTask(context);
+                LoginTask  task = new LoginTask(context);
                 task.execute(userData);
-            }else{
-                intent = new Intent(getApplication(), LoginActivity.class);
+            }else {
+                intent = new Intent();
+                intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.LoginActivity");
                 startActivity(intent);
             }
 
-            // SplashActivityを終了させます。
             Splash.this.finish();
         }
     }

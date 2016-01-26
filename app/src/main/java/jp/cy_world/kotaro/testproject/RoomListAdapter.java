@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -35,8 +37,10 @@ public class RoomListAdapter extends ArrayAdapter<Room>{
         }
 
         TextView roomName = (TextView)v.findViewById(R.id.roomName);
+        TextView comment = (TextView)v.findViewById(R.id.comment);
 
         roomName.setText(room.getRoomName());
+        comment.setText(room.getRoomCom());
         Log.d("pos",room.getRoomName());
 
         return v;

@@ -3,6 +3,7 @@ package jp.cy_world.kotaro.testproject;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -37,7 +38,6 @@ public class IdeaAddTask extends AsyncTask<ArrayList<String>,Integer,String> {
     @Override
     protected void onPostExecute(String s) {
         //TODO:IdeaListActivity更新
-
         Intent intent = new Intent();
         intent.putExtra("roomData",room);
         intent.setClassName("jp.cy_world.kotaro.testproject","jp.cy_world.kotaro.testproject.IdeaListActivity");

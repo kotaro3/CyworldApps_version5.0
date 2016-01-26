@@ -15,11 +15,20 @@
             android:id="@+id/roomName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:textColor="@android:color/black"
             android:text="roomname"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
             android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:text="comment"
+                android:layout_marginLeft="10dp"
+                android:textSize="20sp" />
 
         </LinearLayout>
 

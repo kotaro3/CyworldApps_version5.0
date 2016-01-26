@@ -1,6 +1,7 @@
 package jp.cy_world.kotaro.testproject;
 
 import android.content.Context;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +47,6 @@ public class IdeaListAdapter extends RecyclerView.Adapter<IdeaListAdapter.ViewHo
     //view保持クラス
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
-        TextView detail;
         public ViewHolder(View v) {
             super(v);
             title = (TextView)v.findViewById(R.id.idea_title);

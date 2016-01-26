@@ -3,12 +3,16 @@ package jp.cy_world.kotaro.testproject;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,11 +26,11 @@ import java.util.ArrayList;
 /**
  * Created by kotaro on 15/11/22.
  */
-public class IdeaListActivity extends AppCompatActivity implements View.OnClickListener ,MenuItem.OnMenuItemClickListener{
+public class IdeaListActivity extends AppCompatActivity implements View.OnClickListener {
 
     Room room;
     RecyclerView ideaList;
-    Menu mainMenu;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
         ideaList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         ideaList.setHasFixedSize(true);
         room = (Room)getIntent().getSerializableExtra("roomData");
+        context = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.idea_toolbar);
         if(toolbar != null){
@@ -45,8 +50,13 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
         toolbar.inflateMenu(R.menu.menu_main);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NavUtils.navigateUpFromSameTask(getParent());
+//            }
+//        });
 
 
         IdeaGetTask task = new IdeaGetTask(this,ideaList);
@@ -60,47 +70,51 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        boolean result;
+
+        switch (id) {
+            case android.R.id.home:
+                Log.v("log", "home");
+                Toast.makeText(this,"aaaaaaaaaaaa",Toast.LENGTH_LONG).show();
+                NavUtils.navigateUpFromSameTask(this);
+            result = true;
+            break;
+            default:
+                result = super.onOptionsItemSelected(item);
+        }
+
+        return result;
+    }
+
+    //icon click
+    @Override
     public void onClick(View v) {
+
         switch (v.getId()){
             case R.id.add_button:
                 Dialog edit = new EditIdeaDialog(this,room);
                 edit.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 edit.show();
                 break;
+            case android.R.id.icon:
+                Log.v("Log","Click Home");
+                Toast.makeText(this,"",Toast.LENGTH_LONG).show();
+                break;
+
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.add(0, 0, 0, "Settings").setIcon(android.R.drawable.ic_dialog_info);
-        mainMenu = menu;
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        final int action = event.getAction();
-        final int keyCode = event.getKeyCode();
-        if (action == KeyEvent.ACTION_UP) {
-            // メニュー表示
-            if (keyCode == KeyEvent.KEYCODE_MENU) {
-                if (mainMenu != null) {
-                    mainMenu.performIdentifierAction(R.id.action_settings, 0);
-                }
-                return true;
-            }
-        }
-        return super.dispatchKeyEvent(event);
-    }
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Toast.makeText(this, "settings clicked 2", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return false;
-    }
+
+
 }

@@ -1,9 +1,13 @@
 package jp.cy_world.kotaro.testproject;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -57,8 +61,21 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String>{
     protected void onPostExecute(String aString) {
 
         if(aString == null){
-            intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.LoginActivity");
-            context.startActivity(intent);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Login Failed");
+            builder.setMessage("Technical problem has occurred . Please wait until the restoration .");
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+
         }else {
             user = new User();
             try {
@@ -71,26 +88,38 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String>{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             Log.v("str", aString);
+
+            SharedPreferences data = PreferenceManager.getDefaultSharedPreferences(context);
+            data.edit().putString("userId",user.getUserId()).commit();
 
             if(user.getUserId() != null){
                 Log.d("task", "task Success");
+
                 intent.putExtra("userData", user);
                 intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.RoomListActivity");
                 context.startActivity(intent);
 
             }else if (aString.equals("False")){
-                Toast.makeText(context,"Login Failed",Toast.LENGTH_LONG).show();
-                Log.v("login","失敗");
-            }else{
-                Toast.makeText(context,"プログラムエラー",Toast.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Login Failed");
+                builder.setMessage("ID or PassWord is the mismatch .");
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                Log.v("login", "失敗");
+
+                intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.LoginActivity");
+                context.startActivity(intent);
+
             }
-
         }
-
-
-
     }
-
-
 }

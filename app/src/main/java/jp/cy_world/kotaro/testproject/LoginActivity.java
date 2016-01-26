@@ -1,6 +1,9 @@
 package jp.cy_world.kotaro.testproject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -47,6 +50,8 @@ public class LoginActivity extends Activity implements OnClickListener{
         createPage = (TextView)findViewById(R.id.createPage);
 
         data = PreferenceManager.getDefaultSharedPreferences(this);
+        input_address.setText(data.getString("address",null));
+        input_passwd.setText(data.getString("passwd",null));
 
         start.setOnClickListener(this);
         createPage.setOnClickListener(this);
@@ -55,30 +60,42 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if(address!= null && passwd != null){
-            data.edit().putString("address", address.toString()).commit();
-            data.edit().putString("passwd",passwd.toString()).commit();
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.start:
+                Log.v("start","login");
                 sb_address = (SpannableStringBuilder) input_address.getText();
                 sb_passwd = (SpannableStringBuilder) input_passwd.getText();
                 address = sb_address.toString();
                 passwd = sb_passwd.toString();
 
+                if (address.equals("") && passwd.equals("")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Login Failed");
+                    builder.setMessage("ID and Password is not entered.");
+
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    return;
+                }
+
                 userData = new ArrayList<>();
                 userData.add(address);
                 userData.add(passwd);
 
+                data.edit().putString("address", address.toString()).commit();
+                data.edit().putString("passwd",passwd.toString()).commit();
                 task = new LoginTask(this);
                 task.execute(userData);
+
                 break;
+
             case R.id.createPage:
                 Uri uri = Uri.parse("http://cyworld.pgw.jp:1919/cyworld/RegisterServlet");
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
@@ -86,15 +103,4 @@ public class LoginActivity extends Activity implements OnClickListener{
                 break;
         }
     }
-
-    private void Login(ArrayList<String> userData){
-
-        if(data.getString("address",null) != null && data.getString("passwd",null) != null){
-            task = new LoginTask(this);
-            task.execute(userData);
-        }else {
-            return;
-        }
-    }
-
 }

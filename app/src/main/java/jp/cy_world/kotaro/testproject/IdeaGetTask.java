@@ -76,7 +76,6 @@ public class IdeaGetTask extends AsyncTask<String, Integer,String> implements Di
 
     @Override
     protected void onPostExecute(String tickets) {
-        ArrayList<Ticket> ticketData = new ArrayList<>();
         Map<String,String> map = new LinkedHashMap<>();
 
         try {
@@ -88,12 +87,6 @@ public class IdeaGetTask extends AsyncTask<String, Integer,String> implements Di
                 e.printStackTrace();
             }
 
-//            for (int i = 0;i <= array.length();i++){
-//                JSONObject obj = array.getJSONObject(i);
-//                ticketData.add(new Ticket(obj.getString("11"),null,roomid));
-//            }
-
-//        ticketData.add(new Ticket(null,obj.keys().getClass().getName(),roomid));
 
         IdeaListAdapter adapter = new IdeaListAdapter(context,map);
         recyclerView.setAdapter(adapter);
