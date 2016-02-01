@@ -51,12 +51,6 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
         }
 
         toolbar.inflateMenu(R.menu.menu_main);
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NavUtils.navigateUpFromSameTask(getParent());
-//            }
-//        });
 
 
         IdeaGetTask task = new IdeaGetTask(this,ideaList);
@@ -84,7 +78,6 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
         switch (id) {
             case android.R.id.home:
                 Log.v("log", "home");
-                Toast.makeText(this,"aaaaaaaaaaaa",Toast.LENGTH_LONG).show();
                 NavUtils.navigateUpFromSameTask(this);
             result = true;
             break;

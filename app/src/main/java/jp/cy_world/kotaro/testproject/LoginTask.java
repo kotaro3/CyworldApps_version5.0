@@ -101,7 +101,12 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String>{
                 intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.RoomListActivity");
                 context.startActivity(intent);
 
-            }else if (aString.equals("False")){
+
+            }else if (data.getString("address",null) == null && data.getString("passwd",null) == null){
+                intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.LoginActivity");
+                context.startActivity(intent);
+
+            }else if (aString.equals("False")) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Login Failed");
                 builder.setMessage("ID or PassWord is the mismatch .");
@@ -116,10 +121,7 @@ public class LoginTask extends AsyncTask<ArrayList<String>,Void,String>{
                 alertDialog.show();
                 Log.v("login", "失敗");
 
-                intent.setClassName("jp.cy_world.kotaro.testproject", "jp.cy_world.kotaro.testproject.LoginActivity");
-                context.startActivity(intent);
-
             }
-        }
+            }
     }
 }

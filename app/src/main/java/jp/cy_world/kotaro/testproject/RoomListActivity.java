@@ -108,14 +108,7 @@ public class RoomListActivity extends AppCompatActivity implements AdapterView.O
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        boolean ret = true;
-        switch (item.getItemId()){
 
-        }
-        return ret;
-    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
