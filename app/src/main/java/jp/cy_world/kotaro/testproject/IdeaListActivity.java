@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,8 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by kotaro on 15/11/22.
  */
-public class IdeaListActivity extends AppCompatActivity implements View.OnClickListener {
-
+public class IdeaListActivity extends AppCompatActivity implements View.OnClickListener{
     Room room;
     RecyclerView ideaList;
     Context context;
@@ -40,6 +40,13 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
         ideaList = (RecyclerView)findViewById(R.id.recyclerView);
         ideaList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         ideaList.setHasFixedSize(true);
+        ideaList.addOnItemTouchListener(new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                //TODO:チケット編集処理記入
+            }
+        }));
+
         room = (Room)getIntent().getSerializableExtra("roomData");
         context = this;
 
@@ -51,7 +58,6 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
         }
 
         toolbar.inflateMenu(R.menu.menu_main);
-
 
         IdeaGetTask task = new IdeaGetTask(this,ideaList);
         task.execute(room.getRoomId());
@@ -105,9 +111,5 @@ public class IdeaListActivity extends AppCompatActivity implements View.OnClickL
 
         }
     }
-
-
-
-
 
 }
